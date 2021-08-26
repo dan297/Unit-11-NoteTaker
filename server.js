@@ -19,22 +19,12 @@ app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
-app.get("*", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-
-
-
-
-
-
-// app.get('/api/notes', (req, res) => {
-//     const notes = fs.readFile('db/db.json')
-//     res.json(JSON.parse(notes))
-// })
-
-// app.post('/', (req, res) => {
-//     const notes = fs.readFile('db/db.json')
-
-
+app.get('/api/notes', (req, res) => {
+  readFromFile('db/db.json').then((data) =>
+    res.json(JSON.parse(data))
+  );
+});
