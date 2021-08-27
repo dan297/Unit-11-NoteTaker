@@ -23,8 +23,17 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-app.get('/api/notes', (req, res) => {
-  readFromFile('db/db.json').then((data) =>
-    res.json(JSON.parse(data))
-  );
+app.get("/api/notes", (req, res) => {
+  readFromFile("db/db.json").then((data) => res.json(JSON.parse(data)));
+});
+
+app.post("/api/notes", (req, res) => {
+  console.log("Note added successfully 🚀" + req.body);
+  const noteText = JSON.parse(fs.readFileSync("db/db.json"));
+  const objectNote = req.body;
+  objectNote.id = uuidv1();
+  noteText.push(objectNote);
+  readAndAppend(req.body, "./db/db.json");
+  fs.writeFileSync("db/db.json", JSON.stringify(noteText));
+  res.json(`Note added successfully 🚀`);
 });
